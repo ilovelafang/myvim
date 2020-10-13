@@ -148,11 +148,8 @@ let g:flake8_show_in_file=1
 "pyunit映射键设置
 "noremap ,t :call PyUnitRunTests()<CR>
 "noremap! ,t <Esc>:call PyUnitRunTests()<CR>
-"split navigations Ctrl-j 切换到下方的分割窗口,Ctrl-k 切换到上方的分割窗口,Ctrl-l 切换到右侧的分割窗口,Ctrl-h 切换到左侧的分割窗口
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
+"执行python代码快捷键
+nnoremap <buffer> <F9> :exec 'w !python3' shellescape(@%, 1)<cr>
 "通过这行代码访问你的系统剪贴板
 "set clipboard=unnamed
 "设置字体风格和字体大小
@@ -187,6 +184,8 @@ au BufNewFile,BufRead *.py
 "\:set autoindent
 \:set fileformat=unix
 
+"解决backspace失效设置
+set backspace=2
 " Set the default file encoding to UTF-8:
 set encoding=utf-8
 set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
