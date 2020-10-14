@@ -62,9 +62,12 @@ Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
 
 "Vim支持markdown语法插件
-Plugin 'JamshedVesuna/vim-markdown-preview'
+Plugin 'iamcco/markdown-preview.vim'
 
-"装x屏保插atrix
+"markdown支持展示数学公式
+Plugin 'iamcco/mathjax-support-for-mkdp'
+
+"屏保插件矩阵
 Plugin 'uguu-org/vim-matrix-screensaver'
 
 "大文件检测，自动关闭事件处理、撤销、语法加亮等功能
@@ -105,8 +108,6 @@ call vundle#end()
 map <C-n> :NERDTreeToggle<CR>
 "最后只剩下文件树时，关闭vim
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-"If using Grip
-let vim_markdown_preview_github=1
 "filetype plugin indent on    " enables filetype detection
 let g:SimpylFold_docstring_preview = 1
 "禁用 rope
