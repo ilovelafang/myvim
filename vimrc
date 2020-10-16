@@ -41,14 +41,20 @@ Plugin 'mhinz/vim-startify'
 
 "炫酷的启动界面,tab提示详细信息
 Plugin 'bling/vim-airline'
+
 "底下的文件信息提示行
 Plugin 'vim-airline/vim-airline-themes'
+
+"buffer切换插件
+Plugin 'bling/vim-bufferline'
+
 "以 Vim 插件形式出现的一套工具，它包含了多个用于 Python 开发的工具
 "Plugin 'python-mode/python-mode'
 
 "Python自动补全插件
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'davidhalter/jedi-vim'
+
 "code folding
 "Plugin 'tmhedberg/SimpylFold'
 
@@ -116,17 +122,42 @@ let g:pymode_rope = 0
 let g:LargeFile = 20
 "禁用的键映射Option-P
 let g:AutoPairsShortcutToggle = 'π'
+
 "airline特殊配置
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline#extensions#tabline#overflow_marker = '…'
 let g:airline#extensions#tabline#formatter = 'unique_tail'
-"设置ctrlp搜索结果数量
+
+"ALE Set this. Airline will handle the rest.
+let g:airline#extensions#ale#enabled = 1
+"自定义error和warning图标
+let g:ale_sign_error = '✗'
+let g:ale_sign_warning = '⚡'
+"始终开启标志列
+let g:ale_sign_column_always = 1
+let g:ale_set_highlights = 0
+"在vim自带的状态栏中整合ale
+let g:ale_statusline_format = ['✗ %d', '⚡ %d', '✔ OK']
+"显示Linter名称,出错或警告等相关信息
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+
+"bufferline配置
+let g:bufferline_echo = 1
+let g:bufferline_active_buffer_left = '['
+let g:bufferline_active_buffer_right = ']'
+let g:bufferline_modified = '+'
+let g:bufferline_show_bufnr = 0
+
+"设置ctrlp搜索结果展示数量
 let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:10,results:20'
 "vim下自动打开nerdtree
 "autocmd vimenter * NERDTree
-"autocomplete
+
+"自动补全
 set completeopt=longest,menu	"让Vim的补全菜单行为与一般IDE一致(参考VimTip1228)
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif	"离开插入模式后自动关闭预览窗口
 "回车即选中当前项
@@ -137,22 +168,30 @@ let g:ycm_filetype_whitelist = { 'cpp': 1, 'c': 1, 'python':1 }
 "设置ycm跳转,ctrl+o返回,ctrl+i前进；互补ctags:Ctrl+]前往，Ctrl+t返回
 nnoremap <leader>l :YcmCompleter GoToDeclaration<CR>
 nnoremap <leader>g :YcmCompleter GoToDefinition<CR>
-"nnoremap <C-[> :YcmCompleter GoToDefinitionElseDeclaration<CR>
 nnoremap <leader>f :YcmCompleter GoToDefinitionElseDeclaration<CR>
 map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
+
 "启动flake8检查
 autocmd FileType python map <buffer> <F10> :call flake8#Flake8()<CR>
+
 "每次保存都执行flake8检查
 autocmd BufWritePost *.py call flake8#Flake8()
+
 "flake8标记有问题行
 let g:flake8_show_in_file=1
+
+"打开.md文件时 自动打开预览窗口
+let g:mkdp_auto_start= 1
+
 "pyunit映射键设置
 "noremap ,t :call PyUnitRunTests()<CR>
 "noremap! ,t <Esc>:call PyUnitRunTests()<CR>
+"
 "执行python代码快捷键
 nnoremap <buffer> <F9> :exec 'w !python3' shellescape(@%, 1)<cr>
+
 "通过这行代码访问你的系统剪贴板
-"set clipboard=unnamed
+set clipboard=unnamed
 "设置字体风格和字体大小
 set guifont=Monaco:h16
 "设置gui字体
