@@ -36,7 +36,7 @@ Plugin 'kien/ctrlp.vim'
 "python sytax checker
 Plugin 'nvie/vim-flake8'
 Plugin 'vim-scripts/indentpython.vim'
-Plugin 'scrooloose/syntastic'
+"Plugin 'scrooloose/syntastic'
 Plugin 'mhinz/vim-startify'
 
 "炫酷的启动界面,tab提示详细信息
@@ -88,6 +88,9 @@ Plugin 'preservim/nerdcommenter'
 "语法检查插件
 Plugin 'dense-analysis/ale'
 
+"html自动emmet插件
+Plugin 'mattn/emmet-vim'
+
 "检测python虚拟环境
 py3 << EOF
 import os.path
@@ -99,10 +102,10 @@ if 'VIRTUA_ENV' in os.environ:
   activate_this = os.path.join(project_base_dir,'bin/activate_this.py')
   execfile(activate_this, dict(__file__=activate_this))
 EOF
+
 "确定什么模式下使用何种配色方案
 if has('gui_running')
   colorscheme jellybeans
-  "colorscheme wombat256mod
 else
  "colorscheme wombat256mod
   colorscheme jellybeans
@@ -110,6 +113,7 @@ endif
 "手动切换F5配色方案
 "call togglebg#map("<F5>")
 call vundle#end()
+
 "开启关闭文件树
 map <C-n> :NERDTreeToggle<CR>
 "最后只剩下文件树时，关闭vim
@@ -129,6 +133,8 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline#extensions#tabline#overflow_marker = '…'
 let g:airline#extensions#tabline#formatter = 'unique_tail'
+let g:airline#extensions#virtualenv#enabled = 1
+
 
 "ALE Set this. Airline will handle the rest.
 let g:airline#extensions#ale#enabled = 1
@@ -144,6 +150,10 @@ let g:ale_statusline_format = ['✗ %d', '⚡ %d', '✔ OK']
 let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+"ale设置虚拟环境的查找路径
+let g:ale_virtualenv_dir_names = ['.env', '.venv', 'env', 've-py3', 've', 'virtualenv', 'venv', 'virtualenv_home/*']
+"ale设置虚拟环境默认不使用全局
+let g:ale_python_pylint_use_global = 0
 
 "bufferline配置
 let g:bufferline_echo = 1
@@ -170,6 +180,8 @@ nnoremap <leader>l :YcmCompleter GoToDeclaration<CR>
 nnoremap <leader>g :YcmCompleter GoToDefinition<CR>
 nnoremap <leader>f :YcmCompleter GoToDefinitionElseDeclaration<CR>
 map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
+"omnicomplete
+autocmd FileType python set omnifunc=python3complete#Complete
 
 "启动flake8检查
 autocmd FileType python map <buffer> <F10> :call flake8#Flake8()<CR>
@@ -193,7 +205,7 @@ nnoremap <buffer> <F9> :exec 'w !python3' shellescape(@%, 1)<cr>
 "通过这行代码访问你的系统剪贴板
 set clipboard=unnamed
 "设置字体风格和字体大小
-set guifont=Monaco:h16
+set guifont=Monaco:h18
 "设置gui字体
 "set macligatures
 set guifont=Source\ Code\ Pro\ for\ Powerline:h16
@@ -208,11 +220,6 @@ set noswapfile
 set nu
 "设置查找结果高亮
 set hlsearch
-
-"it would be nice to set tag files by the active virtualenv here
-":set tags=~/mytags "tags for ctags and taglist
-"omnicomplete
-autocmd FileType python set omnifunc=pythoncomplete#Complete
 
 "------------Start Python PEP 8 stuff----------------
 au BufNewFile,BufRead *.py
