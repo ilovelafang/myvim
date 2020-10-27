@@ -173,7 +173,7 @@ autocmd InsertLeave * if pumvisible() == 0|pclose|endif	"离开插入模式后�
 "回车即选中当前项
 inoremap <expr> <CR>       pumvisible() ? "\<C-y>" : "\<CR>"
 let g:ycm_cache_omnifunc=0	" 禁止缓存匹配项,每次都重新生成匹配项
-"let g:ycm_autoclose_preview_window_after_completion=1
+let g:ycm_autoclose_preview_window_after_completion=1
 let g:ycm_filetype_whitelist = { 'cpp': 1, 'c': 1, 'python':1 }
 "设置ycm跳转,ctrl+o返回,ctrl+i前进；互补ctags:Ctrl+]前往，Ctrl+t返回
 nnoremap <leader>l :YcmCompleter GoToDeclaration<CR>
@@ -205,10 +205,10 @@ nnoremap <buffer> <F9> :exec 'w !python3' shellescape(@%, 1)<cr>
 "通过这行代码访问你的系统剪贴板
 set clipboard=unnamed
 "设置字体风格和字体大小
-set guifont=Monaco:h18
+"set guifont=Monaco:h18
 "设置gui字体
 "set macligatures
-set guifont=Source\ Code\ Pro\ for\ Powerline:h16
+set guifont=Source\ Code\ Pro\ for\ Powerline:h18
 "nerdtree不显示.pyc文件
 let NERDTreeIgnore=['\.pyc$', '\~$']
 "文件树在vim下自动打开
