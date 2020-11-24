@@ -1,18 +1,18 @@
 set nocompatible              " required
 filetype off                  " required
-
+ 
 " set the runtime path to include Vundle and initialize
 "set rtp+=~/.vim/bundle/Vundle.vim
 "call vundle#begin()
-
+ 
 " alternatively, pass a path where Vundle should install plugins
 "call vundle#begin('~/some/path/here')
-
+ 
 " let Vundle manage Vundle, required
 "<strong>Plugin 'gmarik/Vundle.vim'</strong>
-
+ 
 " Add all your plugins here (note older versions of Vundle used Bundle instead of Plugin)
-
+ 
 " All of your Plugins must be added before the following line
 "call vundle#end()            " required
 filetype plugin indent on    " requiret nocompatible
@@ -31,7 +31,7 @@ Plugin 'jistr/vim-nerdtree-tabs'
 Plugin 'preservim/nerdtree'
 
 "快速搜索文件插件
-Plugin 'kien/ctrlp.vim'
+"Plugin 'kien/ctrlp.vim' 
 
 "python sytax checker
 Plugin 'nvie/vim-flake8'
@@ -54,9 +54,6 @@ Plugin 'bling/vim-bufferline'
 "Python自动补全插件
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'davidhalter/jedi-vim'
-
-"code folding
-"Plugin 'tmhedberg/SimpylFold'
 
 "Colors,网址https://www.vim.org/scripts/script_search_results.php
 Plugin 'posva/vim-vue'
@@ -90,6 +87,24 @@ Plugin 'dense-analysis/ale'
 
 "html自动emmet插件
 Plugin 'mattn/emmet-vim'
+
+"前端代码检查
+Plugin 'scrooloose/syntastic'
+
+"支持css语法
+Plugin 'hail2u/vim-css3-syntax'
+
+"支持LESS语法
+Plugin 'groenewege/vim-less'
+
+"JavaScript 语法高亮
+Plugin 'pangloss/vim-javascript'
+
+"提供强大的JavaScript omnifunc
+Plugin 'marijnh/tern_for_vim'
+
+"搜索文件插件，性能强大
+Plugin 'Yggdroot/LeaderF'
 
 "检测python虚拟环境
 py3 << EOF
@@ -130,11 +145,61 @@ let g:AutoPairsShortcutToggle = 'π'
 "airline特殊配置
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#buffer_nr_show = 1
+let g:airline#extensions#tabline#buffer_nr_show = 0
 let g:airline#extensions#tabline#overflow_marker = '…'
 let g:airline#extensions#tabline#formatter = 'unique_tail'
 let g:airline#extensions#virtualenv#enabled = 1
+let g:airline#extensions#tabline#show_buffers = 0
 
+"vim-bufferline配置
+let g:bufferline_show_bufnr = 1 "设置不显示tab number
+
+function Tab_buf_switch(num) abort
+    if exists('g:feat_enable_airline') && g:feat_enable_airline == 1
+        execute 'normal '."\<Plug>AirlineSelectTab".a:num
+    else
+        if exists( '*tabpagenr' ) && tabpagenr('$') != 1
+            " Tab support && tabs open
+            execute 'normal '.a:num.'gt'
+        else
+            let l:temp=a:num
+            let l:buf_index=a:num
+            let l:buf_count=len(filter(range(1, bufnr('$')), 'buflisted(v:val)'))
+            if l:temp > l:buf_count
+                return
+            endif
+            while l:buf_index != 0
+                while !buflisted(l:temp)
+                    let l:temp += 1
+                endw
+                let l:buf_index -= 1
+                if l:buf_index != 0
+                    let l:temp += 1
+                endif
+            endw
+            execute ':'.l:temp.'b'
+        endif
+    endif
+endfunction
+
+" tab or buf 1
+nnoremap <leader>1 :call Tab_buf_switch(1)<cr>
+" tab or buf 2
+nnoremap <leader>2 :call Tab_buf_switch(2)<cr>
+" tab or buf 3
+nnoremap  <leader>3 :call Tab_buf_switch(3)<cr>
+" tab or buf 4
+nnoremap  <leader>4 :call Tab_buf_switch(4)<cr>
+" tab or buf 5
+nnoremap  <leader>5 :call Tab_buf_switch(5)<cr>
+" tab or buf 6
+nnoremap  <leader>6 :call Tab_buf_switch(6)<cr>
+" tab or buf 7
+nnoremap  <leader>7 :call Tab_buf_switch(7)<cr>
+" tab or buf 8
+nnoremap  <leader>8 :call Tab_buf_switch(8)<cr>
+" tab or buf 9
+nnoremap  <leader>9 :call Tab_buf_switch(9)<cr>
 
 "ALE Set this. Airline will handle the rest.
 let g:airline#extensions#ale#enabled = 1
@@ -154,6 +219,11 @@ let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 let g:ale_virtualenv_dir_names = ['.env', '.venv', 'env', 've-py3', 've', 'virtualenv', 'venv', 'virtualenv_home/*']
 "ale设置虚拟环境默认不使用全局
 let g:ale_python_pylint_use_global = 0
+"文件修改时语法检查不生效
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_insert_leave = 0
+"文件打开是不检查语法
+let g:ale_lint_on_enter = 0
 
 "bufferline配置
 let g:bufferline_echo = 1
@@ -163,13 +233,23 @@ let g:bufferline_modified = '+'
 let g:bufferline_show_bufnr = 0
 
 "设置ctrlp搜索结果展示数量
-let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:10,results:20'
+"let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:10,results:20'
+"Popup Mode is to open LeaderF in a popup window
+let g:Lf_WindowPosition = 'popup'
+let g:Lf_ShortcutF = '<C-p>'
+let g:Lf_PreviewInPopup = 1
+let g:Lf_StlColorscheme = 'airline'
+let g:Lf_ShowDevIcons = 0 "关闭结果前展示的icon,如果需要展示:https://github.com/ryanoasis/nerd-fonts
+"let g:Lf_StlSeparator = { 'left': '⮀', 'right': '⮂' }
+"let g:Lf_StlSeparator = { 'left': "\u2b80", 'right': "\u2b82" }
+
 "vim下自动打开nerdtree
 "autocmd vimenter * NERDTree
 
 "自动补全
 set completeopt=longest,menu	"让Vim的补全菜单行为与一般IDE一致(参考VimTip1228)
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif	"离开插入模式后自动关闭预览窗口
+let g:ycm_seed_identifiers_with_syntax=1 "关键字自动补全
 "回车即选中当前项
 inoremap <expr> <CR>       pumvisible() ? "\<C-y>" : "\<CR>"
 let g:ycm_cache_omnifunc=0	" 禁止缓存匹配项,每次都重新生成匹配项
@@ -193,14 +273,28 @@ autocmd BufWritePost *.py call flake8#Flake8()
 let g:flake8_show_in_file=1
 
 "打开.md文件时 自动打开预览窗口
-let g:mkdp_auto_start= 1
+let g:mkdp_auto_start= 1  
 
 "pyunit映射键设置
 "noremap ,t :call PyUnitRunTests()<CR>
 "noremap! ,t <Esc>:call PyUnitRunTests()<CR>
-"
+
 "执行python代码快捷键
 nnoremap <buffer> <F9> :exec 'w !python3' shellescape(@%, 1)<cr>
+
+"vue滑动过快高亮失效问题
+autocmd FileType vue syntax sync fromstart
+
+"vue语法检查
+let g:syntastic_javascript_checkers = ['eslint']
+
+"CSS的自动补全
+let g:ycm_semantic_triggers = {
+    \   'css': [ 're!^\s{4}', 're!:\s+'],
+    \   'html': [ '</' ],
+    \ }
+"支持高亮写在JavaScript中的CSS和HTML
+let javascript_enable_domhtmlcss = 1
 
 "通过这行代码访问你的系统剪贴板
 set clipboard=unnamed
@@ -210,7 +304,7 @@ set clipboard=unnamed
 "set macligatures
 set guifont=Source\ Code\ Pro\ for\ Powerline:h18
 "nerdtree不显示.pyc文件
-let NERDTreeIgnore=['\.pyc$', '\~$']
+let NERDTreeIgnore=['\.pyc$', '\~$'] 
 "文件树在vim下自动打开
 "let nerdtree_tabs_open_on_console_startup=1
 "I don't like swap files
@@ -219,7 +313,13 @@ set noswapfile
 "显示行号
 set nu
 "设置查找结果高亮
-set hlsearch
+autocmd cursorhold * set nohlsearch
+" 当输入查找命令时，再启用高亮
+noremap n :set hlsearch<cr>n
+noremap N :set hlsearch<cr>N
+noremap / :set hlsearch<cr>/
+noremap ? :set hlsearch<cr>?
+noremap * *:set hlsearch<cr>
 
 "------------Start Python PEP 8 stuff----------------
 au BufNewFile,BufRead *.py
