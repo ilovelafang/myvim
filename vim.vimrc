@@ -103,8 +103,17 @@ Plugin 'pangloss/vim-javascript'
 "提供强大的JavaScript omnifunc
 Plugin 'marijnh/tern_for_vim'
 
+"补全后，自动展开参数
+Plugin 'tenfyzhong/CompleteParameter.vim'
+
 "搜索文件插件，性能强大
 Plugin 'Yggdroot/LeaderF'
+
+"代码对齐线
+Plugin 'Yggdroot/indentLine'
+
+"自动生成和更新 Markdown 文件的目录
+Plugin 'mzlogin/vim-markdown-toc'
 
 "检测python虚拟环境
 py3 << EOF
@@ -299,10 +308,10 @@ let javascript_enable_domhtmlcss = 1
 "通过这行代码访问你的系统剪贴板
 set clipboard=unnamed
 "设置字体风格和字体大小
-"set guifont=Monaco:h18
+set guifont=Monaco:h20
 "设置gui字体
 "set macligatures
-set guifont=Source\ Code\ Pro\ for\ Powerline:h18
+"set guifont=Source\ Code\ Pro\ for\ Powerline:h18
 "nerdtree不显示.pyc文件
 let NERDTreeIgnore=['\.pyc$', '\~$'] 
 "文件树在vim下自动打开
