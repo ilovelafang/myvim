@@ -1,42 +1,26 @@
 set nocompatible              " required
-filetype off                  " required
- 
-" set the runtime path to include Vundle and initialize
-"set rtp+=~/.vim/bundle/Vundle.vim
-"call vundle#begin()
- 
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
- 
-" let Vundle manage Vundle, required
-"<strong>Plugin 'gmarik/Vundle.vim'</strong>
- 
-" Add all your plugins here (note older versions of Vundle used Bundle instead of Plugin)
- 
-" All of your Plugins must be added before the following line
-"call vundle#end()            " required
+
 filetype plugin indent on    " requiret nocompatible
 filetype off
 
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-
+"包管理
 Plugin 'VundleVim/Vundle.vim'
+
 "git interface
 Plugin 'tpope/vim-fugitive'
-"filesystem
-"文件树
-Plugin 'jistr/vim-nerdtree-tabs'
+
 "文件树
 Plugin 'preservim/nerdtree'
 
-"快速搜索文件插件
-"Plugin 'kien/ctrlp.vim' 
+"文件树icon插件
+Plugin 'ryanoasis/vim-devicons'
 
-"python sytax checker
-Plugin 'nvie/vim-flake8'
+"快速搜索文件插件
+Plugin 'kien/ctrlp.vim'
+
 Plugin 'vim-scripts/indentpython.vim'
-"Plugin 'scrooloose/syntastic'
 Plugin 'mhinz/vim-startify'
 
 "炫酷的启动界面,tab提示详细信息
@@ -48,24 +32,16 @@ Plugin 'vim-airline/vim-airline-themes'
 "buffer切换插件
 Plugin 'bling/vim-bufferline'
 
-"以 Vim 插件形式出现的一套工具，它包含了多个用于 Python 开发的工具
-"Plugin 'python-mode/python-mode'
-
-"Python自动补全插件
-Plugin 'Valloric/YouCompleteMe'
-Plugin 'davidhalter/jedi-vim'
-
 "Colors,网址https://www.vim.org/scripts/script_search_results.php
 Plugin 'posva/vim-vue'
 
-"vue代码高亮插件
+"Vim支持markdown语法插件
 Plugin 'godlygeek/tabular'
+Plugin 'preservim/vim-markdown'
+Plugin 'img-paste-devs/img-paste.vim'  "粘贴图片
 
-"Vim支持markdown语法插件
-Plugin 'plasticboy/vim-markdown'
-
-"Vim支持markdown语法插件
-Plugin 'iamcco/markdown-preview.vim'
+"Vim支持markdown预览
+"Plugin 'iamcco/markdown-preview.vim'
 
 "markdown支持展示数学公式
 Plugin 'iamcco/mathjax-support-for-mkdp'
@@ -77,7 +53,7 @@ Plugin 'uguu-org/vim-matrix-screensaver'
 Plugin 'vim-scripts/LargeFile'
 
 "括号自动补全
-Plugin 'jiangmiao/auto-pairs'
+"Plugin 'jiangmiao/auto-pairs'
 
 "对某个代码块或代码行加上注释，及反过来把注释去掉
 Plugin 'preservim/nerdcommenter'
@@ -107,41 +83,33 @@ Plugin 'marijnh/tern_for_vim'
 Plugin 'tenfyzhong/CompleteParameter.vim'
 
 "搜索文件插件，性能强大
-Plugin 'Yggdroot/LeaderF'
-
-"代码对齐线
-Plugin 'Yggdroot/indentLine'
+"Plugin 'Yggdroot/LeaderF'
 
 "自动生成和更新 Markdown 文件的目录
 Plugin 'mzlogin/vim-markdown-toc'
 
 "检测python虚拟环境
-py3 << EOF
-import os.path
-import sys
-import vim
-if 'VIRTUA_ENV' in os.environ:
-  project_base_dir = os.environ['VIRTUAL_ENV']
-  sys.path.insert(0, project_base_dir)
-  activate_this = os.path.join(project_base_dir,'bin/activate_this.py')
-  execfile(activate_this, dict(__file__=activate_this))
-EOF
+"py3 << EOF
+"import os.path
+"import sys
+"import vim
+"if 'VIRTUA_ENV' in os.environ:
+"  project_base_dir = os.environ['VIRTUAL_ENV']
+"  sys.path.insert(0, project_base_dir)
+"  activate_this = os.path.join(project_base_dir,'bin/activate_this.py')
+"  execfile(activate_this, dict(__file__=activate_this))
+"EOF
 
 "确定什么模式下使用何种配色方案
 if has('gui_running')
   colorscheme jellybeans
 else
- "colorscheme wombat256mod
   colorscheme jellybeans
 endif
 "手动切换F5配色方案
 "call togglebg#map("<F5>")
 call vundle#end()
 
-"开启关闭文件树
-map <C-n> :NERDTreeToggle<CR>
-"最后只剩下文件树时，关闭vim
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 "filetype plugin indent on    " enables filetype detection
 let g:SimpylFold_docstring_preview = 1
 "禁用 rope
@@ -219,7 +187,7 @@ let g:ale_sign_warning = '⚡'
 let g:ale_sign_column_always = 1
 let g:ale_set_highlights = 0
 "在vim自带的状态栏中整合ale
-let g:ale_statusline_format = ['✗ %d', '⚡ %d', '✔ OK']
+"let g:ale_statusline_format = ['✗ %d', '⚡ %d', '✔ OK']
 "显示Linter名称,出错或警告等相关信息
 let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
@@ -234,27 +202,33 @@ let g:ale_lint_on_insert_leave = 0
 "文件打开是不检查语法
 let g:ale_lint_on_enter = 0
 
-"bufferline配置
+"----------------------bufferline config-----------------
 let g:bufferline_echo = 1
 let g:bufferline_active_buffer_left = '['
 let g:bufferline_active_buffer_right = ']'
 let g:bufferline_modified = '+'
 let g:bufferline_show_bufnr = 0
 
-"设置ctrlp搜索结果展示数量
-"let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:10,results:20'
-"Popup Mode is to open LeaderF in a popup window
+"----------------------ctrl搜索文件 config---------------
 let g:Lf_WindowPosition = 'popup'
 let g:Lf_ShortcutF = '<C-p>'
 let g:Lf_PreviewInPopup = 1
 let g:Lf_StlColorscheme = 'airline'
 let g:Lf_ShowDevIcons = 0 "关闭结果前展示的icon,如果需要展示:https://github.com/ryanoasis/nerd-fonts
-"let g:Lf_StlSeparator = { 'left': '⮀', 'right': '⮂' }
-"let g:Lf_StlSeparator = { 'left': "\u2b80", 'right': "\u2b82" }
-
+"----------------------nerdtree config-------------------
 "vim下自动打开nerdtree
 "autocmd vimenter * NERDTree
-
+"开启关闭文件树
+map <C-n> :NERDTreeToggle<CR>
+"最后只剩下文件树时，关闭vim
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+"nerdtree不显示.pyc文件
+let NERDTreeIgnore=['\.pyc$', '\~$']
+"nerdtree文件树在vim下自动打开
+let g:nerdtree_tabs_open_on_console_startup=0
+"nerdtree自动选中当前文件
+let g:nerdtree_tabs_autofind=1
+"----------------------ycm config------------------------
 "自动补全
 set completeopt=longest,menu	"让Vim的补全菜单行为与一般IDE一致(参考VimTip1228)
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif	"离开插入模式后自动关闭预览窗口
@@ -272,21 +246,44 @@ map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
 "omnicomplete
 autocmd FileType python set omnifunc=python3complete#Complete
 
-"启动flake8检查
-autocmd FileType python map <buffer> <F10> :call flake8#Flake8()<CR>
-
-"每次保存都执行flake8检查
-autocmd BufWritePost *.py call flake8#Flake8()
-
 "flake8标记有问题行
 let g:flake8_show_in_file=1
 
-"打开.md文件时 自动打开预览窗口
-let g:mkdp_auto_start= 1  
+"markdown配置
+let g:vim_markdown_folding_disabled = 1 "不要自动折叠
+set conceallevel=2 "语法隐藏
+let g:vim_markdown_fenced_languages = ['csharp=cs'] "代码高亮
+let g:mkdp_auto_start = 1 "打开.md文件时 自动打开预览窗口
+"设置md粘贴图片函数
+autocmd FileType markdown,tex nmap <buffer><silent> <leader>v :call mdip#MarkdownClipboardImage()<CR>
+let g:mdip_imgdir = '.' "md图片保存当前路径
+let g:mdip_imgname = 'image' "保存图片name前缀
+function! g:LatexPasteImage(relpath)
+    execute "normal! i\\includegraphics{" . a:relpath . "}\r\\caption{I"
+    let ipos = getcurpos()
+    execute "normal! a" . "mage}"
+    call setpos('.', ipos)
+    execute "normal! ve\<C-g>"
+endfunction
+autocmd FileType markdown let g:PasteImageFunction = 'g:MarkdownPasteImage'
+autocmd FileType tex let g:PasteImageFunction = 'g:LatexPasteImage'
 
-"pyunit映射键设置
-"noremap ,t :call PyUnitRunTests()<CR>
-"noremap! ,t <Esc>:call PyUnitRunTests()<CR>
+"执行python代码快捷键
+nnoremap <buffer> <F9> :exec 'w !python3' shellescape(@%, 1)<cr>
+
+"vue滑动过快高亮失效问题
+autocmd FileType vue syntax sync fromstart
+
+function! g:LatexPasteImage(relpath)
+    execute "normal! i\\includegraphics{" . a:relpath . "}\r\\caption{I"
+    let ipos = getcurpos()
+    execute "normal! a" . "mage}"
+    call setpos('.', ipos)
+    execute "normal! ve\<C-g>"
+endfunction
+autocmd FileType markdown let g:PasteImageFunction = 'g:MarkdownPasteImage'
+autocmd FileType tex let g:PasteImageFunction = 'g:LatexPasteImage'
+autocmd FileType markdown nmap <buffer><silent> <leader>i :call mdip#MarkdownClipboardImage()<CR>
 
 "执行python代码快捷键
 nnoremap <buffer> <F9> :exec 'w !python3' shellescape(@%, 1)<cr>
@@ -308,22 +305,17 @@ let javascript_enable_domhtmlcss = 1
 "通过这行代码访问你的系统剪贴板
 set clipboard=unnamed
 "设置字体风格和字体大小
-set guifont=Monaco:h20
-"设置gui字体
-"set macligatures
-"set guifont=Source\ Code\ Pro\ for\ Powerline:h18
-"nerdtree不显示.pyc文件
-let NERDTreeIgnore=['\.pyc$', '\~$'] 
-"文件树在vim下自动打开
-"let nerdtree_tabs_open_on_console_startup=1
+"set guifont=Source\ Code\ Pro\ for\ Powerline:h24
+set guifont=SauceCodePro\ Nerd\ Font:h24
 "I don't like swap files
 set noswapfile
-
+"设置vim不自动换行
+"set nowrap
 "显示行号
 set nu
 "设置查找结果高亮
 autocmd cursorhold * set nohlsearch
-" 当输入查找命令时，再启用高亮
+"当输入查找命令时，再启用高亮
 noremap n :set hlsearch<cr>n
 noremap N :set hlsearch<cr>N
 noremap / :set hlsearch<cr>/
@@ -332,7 +324,7 @@ noremap * *:set hlsearch<cr>
 
 "------------Start Python PEP 8 stuff----------------
 au BufNewFile,BufRead *.py
-\:set tabstop=4
+\:set tabstop=2
 \:set softtabstop=4
 \:set shiftwidth=4
 \:set textwidth=79
@@ -344,7 +336,12 @@ au BufNewFile,BufRead *.py
 set backspace=2
 " Set the default file encoding to UTF-8:
 set encoding=utf-8
+set langmenu=zh_CN.UTF-8
 set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
+"解决consle输出乱码 set termencoding = cp936 "设置中文提示
+language messages zh_CN.utf-8
+"设置中文帮助 set helplang=cn "设置为双字宽显示，否则无法完整显示如:☆
+set ambiwidth=double
 "----------Stop python PEP 8 stuff--------------
 "----------前端文件-------------
 au BufNewFile,BufRead *.js, *.html, *.css
@@ -362,6 +359,8 @@ let python_highlight_all=1
 syntax on
 "设置鼠标定位光标
 set mouse=a
+"拼写检查
+"set spell
 "js stuff"
 autocmd FileType javascript setlocal shiftwidth=2 tabstop=2
 if has("cscope")
@@ -369,3 +368,14 @@ if has("cscope")
         cs add cscope.out
     endif
 endif
+
+function! ExecuteNode()
+  let fileName = expand("%:p")
+    echom fileName
+  if fileName =~# '.ts$'
+    execute ':new'
+    silent execute ':r !ts-node '.fileName
+  endif
+endfunction
+
+noremap <leader>N :<C-u>call ExecuteNode()<CR>
