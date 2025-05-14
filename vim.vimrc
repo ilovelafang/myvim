@@ -14,6 +14,9 @@ Plugin 'tpope/vim-fugitive'
 "文件树
 Plugin 'preservim/nerdtree'
 
+"文件排序
+"Plugin 'PhilRunninger/nerdtree-sort-by'
+
 "文件树icon插件
 Plugin 'ryanoasis/vim-devicons'
 
@@ -87,6 +90,16 @@ Plugin 'tenfyzhong/CompleteParameter.vim'
 
 "自动生成和更新 Markdown 文件的目录
 Plugin 'mzlogin/vim-markdown-toc'
+
+"json格式化插件
+"Plugin 'axiaoxin/vim-json-line-format'
+
+"csv列高亮
+Plugin 'chrisbra/csv.vim'
+
+"交换文件
+Plugin 'gioele/vim-autoswap'
+
 
 "检测python虚拟环境
 "py3 << EOF
@@ -218,6 +231,9 @@ let g:Lf_ShowDevIcons = 0 "关闭结果前展示的icon,如果需要展示:https
 "----------------------nerdtree config-------------------
 "vim下自动打开nerdtree
 "autocmd vimenter * NERDTree
+"排序
+let NERDTreeSortOrder = ['\/$', '*', '[[-timestamp]]']
+
 "开启关闭文件树
 map <C-n> :NERDTreeToggle<CR>
 "最后只剩下文件树时，关闭vim
@@ -301,6 +317,13 @@ let g:ycm_semantic_triggers = {
     \ }
 "支持高亮写在JavaScript中的CSS和HTML
 let javascript_enable_domhtmlcss = 1
+"csv列高亮插件
+let g:csv_hiHeader = 'Pmenu'
+"unlet g:csv_hiHeader
+let g:csv_hiGroup = "IncSearch"
+let g:csv_no_conceal = 1
+let g:csv_highlight_column = 'y'
+
 
 "通过这行代码访问你的系统剪贴板
 set clipboard=unnamed
